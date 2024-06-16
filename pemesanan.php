@@ -8,7 +8,7 @@ if (!isset($_SESSION['username']) || $_SESSION['roles'] !== 'Kasir') {
 }
 
 $jenis_barang_list = [];
-$jenis_barang_query = "SELECT DISTINCT jenis_barang FROM databarang";
+$jenis_barang_query = "select distinct jenis_barang from databarang";
 $jenis_barang_result = mysqli_query($koneksi, $jenis_barang_query);
 while ($row = mysqli_fetch_assoc($jenis_barang_result)) {
     $jenis_barang_list[] = $row['jenis_barang'];
@@ -35,7 +35,7 @@ if (isset($_GET['op'])) {
 
 if ($op == 'pilih') {
     $idbarang = $_GET['id'];
-    $qpilih = "SELECT * FROM databarang WHERE id_barang = '$idbarang'";
+    $qpilih = "select * from databarang where id_barang = '$idbarang'";
     $qr = mysqli_query($koneksi, $qpilih);
     
     if ($qr) {
@@ -101,18 +101,12 @@ if (isset($_POST['simpan'])) {
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Selamat datang</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="js/scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -265,13 +259,13 @@ if (isset($_POST['simpan'])) {
                                         $jenis_barang_filter = $_GET['jenis'];
                                     }
 
-                                    $qc = "SELECT * FROM databarang WHERE (nama_barang LIKE '%$pencarian%')";
+                                    $qc = "select * from databarang where (nama_barang like '%$pencarian%')";
 
                                     if (!empty($jenis_barang_filter)) {
-                                        $qc .= " AND jenis_barang = '$jenis_barang_filter'";
+                                        $qc .= " and jenis_barang = '$jenis_barang_filter'";
                                     }
 
-                                    $qc .= " ORDER BY id_barang ASC";
+                                    $qc .= " order by id_barang asc";
                                     $cr = mysqli_query($koneksi, $qc);
                                     ?>
 

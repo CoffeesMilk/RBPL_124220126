@@ -3,20 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login form</title>
     <link rel="stylesheet" href="style.css">
-    <script src="js/scripts.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
-    rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 </head>
 
 <body class="bg-log">
-
-
-
     <div class="form-container">
 
         <form action="db.php" method="POST">
@@ -25,7 +18,6 @@
             if (isset($error)) {
                     echo '<span class="error-msg">' . $error . '</span>';
             }
-            ;
             if (isset($_GET['pesan'])) {
                 if ($_GET['pesan'] == "gagal") {
                     echo '<a class="text-danger"><b>Login gagal! username atau password salah!</b></a>';

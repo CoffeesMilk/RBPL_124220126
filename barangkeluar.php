@@ -21,18 +21,13 @@ $error = "";
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Selamat datang</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -100,7 +95,7 @@ $error = "";
                                 if (isset($_GET['cari'])) {
                                     $pencarian = $_GET['cari'];
                                     $nobon = $_GET['cari'];
-                                    $qc = "SELECT * FROM pesanan WHERE tgl_pesanan LIKE '%$pencarian%' OR no_bon LIKE '%$nobon%' ORDER BY tgl_pesanan ASC, no_bon ASC";
+                                    $qc = "select * from pesanan where tgl_pesanan like '%$pencarian%' or no_bon like '%$nobon%' order by tgl_pesanan asc, no_bon asc";
                                     $cr = mysqli_query($koneksi, $qc);
 
                                     $data_by_date = [];
