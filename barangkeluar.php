@@ -35,7 +35,8 @@ $error = "";
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand ps-3">Selamat datang</a>
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -59,7 +60,8 @@ $error = "";
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as: <br> <?php echo $_SESSION['username'] . ' (' . $_SESSION['roles'] . ')'; ?></div>
+                    <div class="small">Logged in as: <br>
+                        <?php echo $_SESSION['username'] . ' (' . $_SESSION['roles'] . ')'; ?></div>
                     <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;Logout</a>
 
                 </div>
@@ -70,7 +72,7 @@ $error = "";
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Laporan</h1>
                     <div class="mx-auto">
-                    <div class="card">
+                        <div class="card">
                             <div class="card-header text-white bg-secondary">
                                 Data barang keluar
                             </div>
@@ -95,7 +97,7 @@ $error = "";
                                 if (isset($_GET['cari'])) {
                                     $pencarian = $_GET['cari'];
                                     $nobon = $_GET['cari'];
-                                    $qc = "select * from pesanan where tgl_pesanan like '%$pencarian%' or no_bon like '%$nobon%' order by tgl_pesanan asc, no_bon asc";
+                                    $qc = "select * from pesanan where tgl_pesanan like '%$pencarian%' or no_bon like '%$nobon%' order by tgl_pesanan ASC, no_bon ASC";
                                     $cr = mysqli_query($koneksi, $qc);
 
                                     $data_by_date = [];
@@ -106,62 +108,83 @@ $error = "";
                                         }
                                         $data_by_date[$tglpesanan][] = $r;
                                     }
-                                ?>
-                                
-                                <div class="accordion" id="accordionExample">
-                                    <?php foreach ($data_by_date as $date => $orders) { 
-                                        $unique_id = str_replace('/', '-', $date);
                                     ?>
-                                        <div class="card">
-                                            <div class="card-header" id="heading<?php echo $unique_id; ?>">
-                                                <h2 class="mb-0">
-                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<?php echo $unique_id; ?>" aria-expanded="true" aria-controls="collapse<?php echo $unique_id; ?>">
-                                                        <?php echo $date; ?>
-                                                    </button>
-                                                </h2>
-                                            </div>
 
-                                            <div id="collapse<?php echo $unique_id; ?>" class="collapse" aria-labelledby="heading<?php echo $unique_id; ?>" data-parent="#accordionExample">
-                                                <div class="card-body">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">#</th>
-                                                                <th scope="col">No. Bon</th>
-                                                                <th scope="col">Nama barang</th>
-                                                                <th scope="col">Jumlah barang</th>
-                                                                <th scope="col">Jenis barang</th>
-                                                                <th scope="col">Total harga</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php 
-                                                            $nomor = 1;
-                                                            foreach ($orders as $order) { 
-                                                                $idpesanan = $order['id'];
-                                                                $nobon = $order['no_bon'];
-                                                                $namabarang = $order['nama_barang'];
-                                                                $jumlah = $order['jumlah_barang'];
-                                                                $jenis = $order['jenis_barang'];
-                                                                $total = $order['total_harga'];
-                                                            ?>
-                                                            <tr>
-                                                                <td scope="row"><?php echo $nomor++; ?></td>
-                                                                <td scope="row"><?php echo $nobon; ?></td>
-                                                                <td scope="row"><?php echo $namabarang; ?></td>
-                                                                <td scope="row"><?php echo $jumlah; ?></td>
-                                                                <td scope="row"><?php echo $jenis; ?></td>
-                                                                <td scope="row"><?php echo $total; ?></td>
-                                                            </tr>
-                                                            <?php } ?>
-                                                        </tbody>
-                                                    </table>
+                                    <div class="accordion" id="accordionExample">
+                                        <?php
+                                        $sorted_data = [];
+                                        foreach ($data_by_date as $date => $orders) {
+                                            $sorted_data[] = [
+                                                'date' => DateTime::createFromFormat('d/m/Y', $date),
+                                                'orders' => $orders
+                                            ];
+                                        }
+
+                                        usort($sorted_data, function ($a, $b) {
+                                            return $b['date']->format('Ym') <=> $a['date']->format('Ym');
+                                        });
+
+                                        foreach ($sorted_data as $data) {
+                                            $date = $data['date']->format('d/m/Y');
+                                            $orders = $data['orders'];
+                                            $unique_id = str_replace('/', '-', $date);
+                                            ?>
+                                            <div class="card">
+                                                <div class="card-header" id="heading<?php echo $unique_id; ?>">
+                                                    <h2 class="mb-0">
+                                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                            data-target="#collapse<?php echo $unique_id; ?>"
+                                                            aria-expanded="true"
+                                                            aria-controls="collapse<?php echo $unique_id; ?>">
+                                                            <?php echo $date; ?>
+                                                        </button>
+                                                    </h2>
+                                                </div>
+
+                                                <div id="collapse<?php echo $unique_id; ?>" class="collapse"
+                                                    aria-labelledby="heading<?php echo $unique_id; ?>"
+                                                    data-parent="#accordionExample">
+                                                    <div class="card-body">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">#</th>
+                                                                    <th scope="col">No. Bon</th>
+                                                                    <th scope="col">Nama barang</th>
+                                                                    <th scope="col">Jumlah barang</th>
+                                                                    <th scope="col">Jenis barang</th>
+                                                                    <th scope="col">Total harga</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                $nomor = 1;
+                                                                foreach ($orders as $order) {
+                                                                    $idpesanan = $order['id'];
+                                                                    $nobon = $order['no_bon'];
+                                                                    $namabarang = $order['nama_barang'];
+                                                                    $jumlah = $order['jumlah_barang'];
+                                                                    $jenis = $order['jenis_barang'];
+                                                                    $total = $order['total_harga'];
+                                                                    ?>
+                                                                    <tr>
+                                                                        <td scope="row"><?php echo $nomor++; ?></td>
+                                                                        <td scope="row"><?php echo $nobon; ?></td>
+                                                                        <td scope="row"><?php echo $namabarang; ?></td>
+                                                                        <td scope="row"><?php echo $jumlah; ?></td>
+                                                                        <td scope="row"><?php echo $jenis; ?></td>
+                                                                        <td scope="row"><?php echo $total; ?></td>
+                                                                    </tr>
+                                                                <?php } ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    <?php } ?>
-                                </div>
-                                
+                                        <?php } ?>
+                                    </div>
+
+
                                 <?php } ?>
                             </div>
                         </div>
@@ -171,4 +194,5 @@ $error = "";
         </div>
     </div>
 </body>
+
 </html>

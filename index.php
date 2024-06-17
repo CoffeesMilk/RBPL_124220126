@@ -78,7 +78,7 @@ if (isset($_POST['simpan'])) {
         if ($op == 'edit') {
             $qedit = "insert into barangmasuk(id,id_barang,tgl_masuk,nama_barang,jumlah_barang,jenis_barang) values ('$idmasuk','$idbarang','$tglmasuk','$namabarang','$jumlahmasuk','$jenis')";
             if (mysqli_query($koneksi, $qedit)) {
-                $qup = "update databarang set nama_barang = '$namabarang', jumlah_barang = jumlah_barang + $jumlahmasuk where id_barang = '$idbarang'";
+                $qup = "update databarang set nama_barang = '$namabarang', harga_barang = '$harga', jumlah_barang = jumlah_barang + $jumlahmasuk where id_barang = '$idbarang'";
                 if (mysqli_query($koneksi, $qup)) {
                     $sukses = "Data berhasil diupdate";
                 } else {

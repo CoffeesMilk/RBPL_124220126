@@ -91,7 +91,7 @@ $error = "";
                                 $pencarian = "";
                                 if (isset($_GET['cari'])) {
                                     $pencarian = $_GET['cari'];
-                                    $qc = "select * from barangmasuk where tgl_masuk like '%$pencarian%' order by tgl_masuk asc";
+                                    $qc = "select * from barangmasuk where tgl_masuk like '%$pencarian%' order by tgl_masuk ASC";
                                     $cr = mysqli_query($koneksi, $qc);
 
                                     $data_by_date = [];
@@ -105,19 +105,40 @@ $error = "";
                                 ?>
                                 
                                 <div class="accordion" id="accordionExample">
-                                    <?php foreach ($data_by_date as $date => $masuk) { 
-                                        $unique_id = str_replace('/', '-', $date);
-                                    ?>
-                                        <div class="card">
-                                            <div class="card-header" id="heading<?php echo $unique_id; ?>">
-                                                <h2 class="mb-0">
-                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<?php echo $unique_id; ?>" aria-expanded="true" aria-controls="collapse<?php echo $unique_id; ?>">
-                                                        <?php echo $date; ?>
-                                                    </button>
-                                                </h2>
-                                            </div>
+                                <?php
+                                        $sorted_data = [];
+                                        foreach ($data_by_date as $date => $masuk) {
+                                            $sorted_data[] = [
+                                                'date' => DateTime::createFromFormat('d/m/Y', $date),
+                                                'masuk' => $masuk
+                                            ];
+                                        }
 
-                                            <div id="collapse<?php echo $unique_id; ?>" class="collapse" aria-labelledby="heading<?php echo $unique_id; ?>" data-parent="#accordionExample">
+                                        usort($sorted_data, function ($a, $b) {
+                                            return $b['date']->format('Ym') <=> $a['date']->format('Ym');
+                                        });
+
+
+                                        foreach ($sorted_data as $data) {
+                                            $date = $data['date']->format('d/m/Y');
+                                            $masuk = $data['masuk'];
+                                            $unique_id = str_replace('/', '-', $date);
+                                            ?>
+                                        <div class="card">
+                                                <div class="card-header" id="heading<?php echo $unique_id; ?>">
+                                                    <h2 class="mb-0">
+                                                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                            data-target="#collapse<?php echo $unique_id; ?>"
+                                                            aria-expanded="true"
+                                                            aria-controls="collapse<?php echo $unique_id; ?>">
+                                                            <?php echo $date; ?>
+                                                        </button>
+                                                    </h2>
+                                                </div>
+
+                                                <div id="collapse<?php echo $unique_id; ?>" class="collapse"
+                                                    aria-labelledby="heading<?php echo $unique_id; ?>"
+                                                    data-parent="#accordionExample">
                                                 <div class="card-body">
                                                     <table class="table">
                                                         <thead>
